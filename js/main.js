@@ -45,3 +45,33 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+const circles = document.querySelectorAll(".circle");
+
+window.addEventListener("mousemove", (e) => {
+  const x = e.clientX;
+  const y = e.clientY;
+
+  circles.forEach((circle, index) => {
+    const delay = index * 25;
+    setTimeout(() => {
+      circle.style.left = x + "px";
+      circle.style.top = y + "px";
+    }, delay);
+  });
+});
+
+/* for mobile touch */
+window.addEventListener("touchmove", (e) => {
+  const touch = e.touches[0];
+  const x = touch.clientX;
+  const y = touch.clientY;
+
+  circles.forEach((circle, index) => {
+    const delay = index * 25;
+    setTimeout(() => {
+      circle.style.left = x + "px";
+      circle.style.top = y + "px";
+    }, delay);
+  });
+});
