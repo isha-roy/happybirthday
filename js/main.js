@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  setupMusicControls();
   const cake = document.getElementById("cake");
   const videoBox = document.getElementById("videoBox");
   const video = document.getElementById("surpriseVideo");
@@ -27,10 +28,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Video ended - show love reveal
-  // Video ended - show love reveal
 if (video) {
   video.addEventListener("ended", () => {
     videoBox.classList.add("hidden");
+    
+    // Trigger confetti animation on video end
+    if (window.triggerConfetti) {
+      window.triggerConfetti();
+    }
 
     // Small delay for smooth transition
     setTimeout(() => {
@@ -44,6 +49,18 @@ if (video) {
   });
 }
 
+  // Loading states for video
+  if (video) {
+    video.addEventListener("loadstart", () => {
+      document.getElementById("videoLoader").classList.remove("hidden");
+    });
+    video.addEventListener("canplay", () => {
+      document.getElementById("videoLoader").classList.add("hidden");
+    });
+    video.addEventListener("playing", () => {
+      document.getElementById("videoLoader").classList.add("hidden");
+    });
+  }
 
   // Close love reveal
   if (closeLoveBtn) {
@@ -126,6 +143,82 @@ dockItems.forEach(item => {
     fadeVolume(1);
   });
 });
+
+// Music controls with playlist
+function setupMusicControls() {
+  const musicToggle = document.getElementById("musicToggle");
+  const playlistToggle = document.getElementById("playlistToggle");
+  const playlistMenu = document.getElementById("playlistMenu");
+  const playlistItems = document.querySelectorAll(".playlist-item");
+  const bgMusic = document.querySelector(".song");
+  
+  if (!musicToggle || !bgMusic) return;
+  
+  let isPlaying = true;
+  
+  // Music toggle
+  musicToggle.addEventListener("click", () => {
+    if (isPlaying) {
+      bgMusic.pause();
+      musicToggle.innerHTML = '<span class="music-icon">🔇</span>';
+      musicToggle.classList.add("muted");
+      isPlaying = false;
+    } else {
+      bgMusic.play().catch(err => console.log("Playback error:", err));
+      musicToggle.innerHTML = '<span class="music-icon">🔊</span>';
+      musicToggle.classList.remove("muted");
+      isPlaying = true;
+    }
+  });
+  
+  // Playlist toggle
+  if (playlistToggle) {
+    playlistToggle.addEventListener("click", () => {
+      playlistMenu.classList.toggle("hidden");
+    });
+  }
+  
+  // Close playlist menu when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".music-control-container")) {
+      playlistMenu.classList.add("hidden");
+    }
+  });
+  
+  // Playlist item selection
+  playlistItems.forEach(item => {
+    item.addEventListener("click", () => {
+      const track = item.dataset.track;
+      if (track) {
+        document.getElementById("audioLoader").classList.remove("hidden");
+        bgMusic.src = track;
+        bgMusic.load();
+        if (isPlaying) {
+          bgMusic.play().catch(err => console.log("Playback error:", err));
+        }
+        playlistMenu.classList.add("hidden");
+        // Visual feedback
+        document.querySelectorAll(".playlist-item").forEach(i => {
+          i.style.opacity = "0.7";
+          i.style.fontWeight = "500";
+        });
+        item.style.opacity = "1";
+        item.style.fontWeight = "700";
+      }
+    });
+  });
+  
+  // Loading states for audio
+  bgMusic.addEventListener("loadstart", () => {
+    document.getElementById("audioLoader").classList.remove("hidden");
+  });
+  bgMusic.addEventListener("canplay", () => {
+    document.getElementById("audioLoader").classList.add("hidden");
+  });
+  bgMusic.addEventListener("playing", () => {
+    document.getElementById("audioLoader").classList.add("hidden");
+  });
+}
 
 function startLoveTimer() {
   const startDate = new Date("2025-04-18T00:00:00"); // dating start
