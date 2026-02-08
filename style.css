@@ -404,27 +404,27 @@ img[src*="banner"] {
 
 /* sizes + aesthetic pinks */
 .c1 {
-  width: 320px;
-  height: 320px;
-  background: radial-gradient(circle, #e89ab3, #f3bfd3);
-  filter: blur(10px);
-  opacity: 0.7;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, #e89ab3, #f6d1e7);
+  filter: blur(15px);
+  opacity: 0.5;
 }
 
 .c2 {
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, #d77fa1, #f1b7cc);
-  filter: blur(8px);
-  opacity: 0.75;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, #ffffff, #f8cdda);
+  filter: blur(12px);
+  opacity: 0.6;
 }
 
 .c3 {
   width: 130px;
   height: 130px;
   background: radial-gradient(circle, #ffffff, #e89ab3);
-  filter: blur(5px);
-  opacity: 0.9;
+  filter: blur(10px);
+  opacity: 0.7;
 }
 
 .sparkle-text {
@@ -483,3 +483,113 @@ img[src*="banner"] {
     opacity: 0;
   }
 }
+
+/* final dock section */
+.page-spacer {
+  height: 50vh;   /* creates scroll */
+}
+
+.dock-section {
+  position: relative;
+  z-index: 100;
+  margin-top: 140px;     /* pushes it BELOW cake area */
+  padding-bottom: 60px;  /* breathing space at bottom */
+  display: flex;
+  justify-content: center;
+}
+
+/* dock itself */
+.love-dock {
+  position: relative;    /* IMPORTANT */
+  display: flex;
+  gap: 14px;
+  padding: 14px 20px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  overflow: visible;
+}
+
+
+/* dock icons */
+.dock-item {
+  position: relative;
+}
+
+.dock-item > img {
+  width: 44px;
+  height: 44px;
+  transition: transform 0.25s ease;
+}
+
+/* macOS zoom */
+.dock-item:hover > img {
+  transform: scale(1.6) translateY(-8px);
+}
+
+/* preview bubble */
+.dock-preview {
+  position: absolute;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  background: #fff;
+  padding: 10px;
+  border-radius: 14px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s ease;
+  width: 160px;
+  text-align: center;
+  z-index: 10000;
+}
+
+/* show preview on hover */
+.dock-item:hover .dock-preview {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* preview image */
+.dock-preview img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 6px;
+}
+
+/* preview text */
+.dock-preview p {
+  font-size: 13px;
+  color: #b03060;
+  font-weight: 500;
+}
+
+.dock-section {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: dockReveal 1s ease forwards;
+  animation-delay: 0.4s;
+}
+
+@keyframes dockReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Pause circle animation over dock */
+.love-dock:hover ~ .cursor-circles,
+.love-dock:hover .circle {
+  animation-play-state: paused;
+  opacity: 0;
+}
+/* hide cursor circles when over dock */
+.hide-circles {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+

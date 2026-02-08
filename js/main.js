@@ -76,3 +76,16 @@ window.addEventListener("touchmove", (e) => {
   });
 });
 
+const dock = document.querySelector(".love-dock");
+const cursorLayer = document.querySelector(".cursor-circles");
+
+if (dock && cursorLayer) {
+  dock.addEventListener("mouseenter", () => {
+    cursorLayer.classList.add("hide-circles");
+  });
+
+  dock.addEventListener("mouseleave", () => {
+    cursorLayer.classList.remove("hide-circles");
+  });
+}
+
