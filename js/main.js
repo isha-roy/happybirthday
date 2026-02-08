@@ -89,3 +89,32 @@ if (dock && cursorLayer) {
   });
 }
 
+const dockItems = document.querySelectorAll(".dock-item");
+const bgMusic = document.querySelector(".song");
+
+function fadeVolume(target) {
+  const bgMusic = document.querySelector(".song");
+  if (!bgMusic) return;
+
+  clearInterval(bgMusic._fade);
+  bgMusic._fade = setInterval(() => {
+    if (Math.abs(bgMusic.volume - target) < 0.02) {
+      bgMusic.volume = target;
+      clearInterval(bgMusic._fade);
+    } else {
+      bgMusic.volume += bgMusic.volume < target ? 0.02 : -0.02;
+    }
+  }, 30);
+}
+
+dockItems.forEach(item => {
+  item.addEventListener("mouseenter", () => {
+    document.body.classList.add("whisper-mode");
+    fadeVolume(0.25);
+  });
+
+  item.addEventListener("mouseleave", () => {
+    document.body.classList.remove("whisper-mode");
+    fadeVolume(1);
+  });
+});
